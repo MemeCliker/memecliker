@@ -129,6 +129,7 @@
             font-size: 18px;
             transition: all 0.3s;
             box-shadow: 0 0 15px #00ff00;
+            cursor: pointer;
         }
 
         .upgrade:hover {
@@ -164,6 +165,7 @@
             border-radius: 30px;
             max-width: 500px;
             box-shadow: 0 0 50px #ff0000;
+            color: #fff;
         }
 
         #start-btn.enabled {
@@ -176,17 +178,92 @@
             cursor: pointer;
             animation: pulse 1.5s infinite;
         }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Kontakt z twórcą */
+        #contact-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 50px;
+            cursor: pointer;
+            background: rgba(0, 255, 0, 0.2);
+            padding: 15px;
+            border-radius: 50%;
+            border: 4px solid #00ff00;
+            box-shadow: 0 0 25px #00ff00;
+            transition: 0.3s;
+            z-index: 999;
+        }
+
+        #contact-icon:hover {
+            transform: scale(1.2) rotate(20deg);
+            background: rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 40px #00ff00;
+        }
+
+        #contact-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-box {
+            background: #000;
+            padding: 40px;
+            border: 5px solid #00ff00;
+            border-radius: 25px;
+            box-shadow: 0 0 50px #00ff00;
+            color: #00ff00;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .close-modal {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Kontakt z twórcą -->
+    <div id="contact-icon" onclick="toggleContact(true)">✉️</div>
+
+    <div id="contact-modal" onclick="toggleContact(false)">
+        <div class="contact-box" onclick="event.stopPropagation()">
+            <h2 style="color:#00ffff; font-size:40px;">KONTAKT Z TWÓRCĄ</h2>
+            <p style="font-size:24px;">Email:</p>
+            <p style="color:#fff; font-size:20px;">MemeClikerKontakt@gmail.com</p>
+            <button class="close-modal" onclick="toggleContact(false)">ZAMKNIJ</button>
+        </div>
+    </div>
+
+    <!-- Overlay startowy -->
     <div id="overlay">
         <div id="rules-box">
-            <h2 style="color:#ff0000; font-size:48px;">OSTRZEŻENIE: TOTALNE DYMY</h2>
-            <p style="font-size:22px;">Klikasz = 30% szansy na Rick Roll<br>Nie ma odwrotu. Akceptujesz ryzyko?</p>
+            <h2 style="color:#ff0000; font-size:48px;">OSTRZEŻENIE: DYMY ALERT</h2>
+            <p style="font-size:22px;">Klikasz = 10% szansy na Rick Roll<br>Nie ma odwrotu, mordeczko.</p>
             <br>
             <input type="checkbox" id="c" onchange="toggleStart()">
-            <label for="c" style="font-size:20px;">Akceptuję, że mogę zostać zricksrollowany</label>
+            <label for="c" style="font-size:20px;">Akceptuję ryzyko rickrolla</label>
             <br><br>
             <button id="start-btn" disabled>ROZPOCZYNAM CHAOS</button>
         </div>
@@ -210,7 +287,7 @@
         let coins = 0, clicks = 0, autoCPS = 0, clickPower = 1;
         const WIN_GOAL = 99999999;
 
-        // Pula dźwięków przy każdym kliknięciu
+        // Dźwięki przy każdym kliknięciu
         const clickSounds = [
             "https://cdn.myinstants.com/instants/audio/six-seven-73913.mp3",
             "https://cdn.myinstants.com/instants/audio/jixaw-metal-pipe-falling-sound-28270.mp3",
@@ -243,27 +320,25 @@
             setTimeout(() => el.remove(), 1200);
         }
 
+        // Główny klik
         document.getElementById('click-btn').addEventListener('click', function(e) {
-            // Zwiększ licznik
             clicks += clickPower;
             coins += clickPower;
 
-            // Dźwięk przy każdym kliknięciu
             playRandomSound();
-
-            // Efekt wizualny
             createEffect(e.clientX, e.clientY);
 
-            // 30% szansy na Rick Roll
-            if (Math.random() < 0.30) {
+            // 10% szansy na Rick Roll (zmniejszone z 30%)
+            if (Math.random() < 0.10) {
                 setTimeout(() => {
                     window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-                }, 300);
+                }, 400);
             }
 
             updateUI();
         });
 
+        // Start gry
         function toggleStart() {
             const checked = document.getElementById('c').checked;
             const btn = document.getElementById('start-btn');
@@ -276,6 +351,12 @@
             }
         }
 
+        // Kontakt
+        function toggleContact(show) {
+            document.getElementById('contact-modal').style.display = show ? 'flex' : 'none';
+        }
+
+        // Kupowanie upgrade'ów
         function buy(cost, power) {
             if (coins >= cost) {
                 coins -= cost;
@@ -294,11 +375,7 @@
         function checkAffordability() {
             document.querySelectorAll('.upgrade[data-cost]').forEach(btn => {
                 const cost = parseFloat(btn.dataset.cost);
-                if (coins >= cost) {
-                    btn.classList.add('afford-yes');
-                } else {
-                    btn.classList.remove('afford-yes');
-                }
+                btn.classList.toggle('afford-yes', coins >= cost);
             });
         }
 
@@ -309,10 +386,11 @@
             checkAffordability();
 
             if (coins >= WIN_GOAL) {
-                alert("ELO MORDO! UKOŃCZYŁEŚ GRĘ Z 99 999 999 COINAMI! JESTEM Z CIEBIE DUMNY 🔥💪");
+                alert("ELO MORDO! UKOŃCZYŁEŚ GRĘ Z 99 999 999 COINAMI! JESTEM Z CIEBIE MEGA DUMNY 🔥💪");
             }
         }
 
+        // Auto-clicker co sekundę
         setInterval(() => {
             if (autoCPS > 0) {
                 coins += autoCPS;
