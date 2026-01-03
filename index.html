@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEME CLICKER: FINAL DYMY EDITION</title>
-    <!-- Biblioteka do screenshotów -->
+    <title>MEME CLICKER: DYMY EDITION 2026</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Impact&family=Orbitron:wght@900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Impact&family=Orbitron:wght@900&family=Comic+Sans+MS&display=swap');
 
         body {
             margin: 0;
-            background: linear-gradient(135deg, #000, #111);
-            color: #0f0;
-            font-family: 'Orbitron', 'Impact', sans-serif;
+            padding: 0;
+            background: linear-gradient(45deg, #0f0f0f, #1a001a, #000);
+            color: #00ff00;
+            font-family: 'Comic Sans MS', 'Impact', sans-serif;
             text-align: center;
             min-height: 100vh;
             overflow: hidden;
@@ -24,305 +24,282 @@
             position: relative;
         }
 
+        h1 {
+            font-size: 60px;
+            margin: 10px;
+            text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+            color: #00ffff;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #00ffff; }
+            to { text-shadow: 0 0 50px #00ffff, 0 0 80px #ff00ff; }
+        }
+
+        #counter {
+            font-size: 100px;
+            font-weight: bold;
+            margin: 20px;
+            color: #ff00ff;
+            text-shadow: 0 0 30px #ff00ff;
+        }
+
+        #click-btn {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff00ff, #00ffff);
+            border: 8px solid #ffff00;
+            font-size: 48px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 50px #ff00ff;
+            transition: all 0.1s;
+            animation: pulseBtn 1.5s infinite;
+        }
+
+        #click-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 80px #ffff00;
+        }
+
+        #click-btn:active {
+            transform: scale(0.95);
+            animation: shake 0.5s;
+        }
+
+        @keyframes pulseBtn {
+            0% { box-shadow: 0 0 50px #ff00ff; }
+            50% { box-shadow: 0 0 80px #00ffff; }
+            100% { box-shadow: 0 0 50px #ff00ff; }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-10px, 0); }
+            20%, 40%, 60%, 80%, 100% { transform: translate(10px, 0); }
+        }
+
         .click-effect {
             position: absolute;
-            color: #0ff;
-            font-size: 30px;
+            font-size: 40px;
             font-weight: bold;
             pointer-events: none;
-            animation: floatUp 1s ease-out forwards;
-            text-shadow: 0 0 10px #0ff;
+            animation: explode 1.2s ease-out forwards;
             z-index: 10;
-        }
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-100px); }
+            text-shadow: 0 0 15px #ffff00;
         }
 
-        #contact-icon { position: fixed; bottom: 20px; right: 20px; font-size: 40px; cursor: pointer; background: rgba(0,255,0,0.1); padding: 10px; border-radius: 50%; border: 2px solid #0f0; box-shadow: 0 0 15px #0f0; transition: 0.3s; z-index: 999; }
-        #contact-icon:hover { transform: scale(1.2); background: rgba(0,255,0,0.2); }
+        @keyframes explode {
+            0% { opacity: 1; transform: scale(0.5) translateY(0); }
+            100% { opacity: 0; transform: scale(2) translateY(-150px); }
+        }
 
-        #contact-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
-        .contact-box { background: #000; padding: 30px; border: 4px solid #0f0; border-radius: 20px; box-shadow: 0 0 40px #0f0; color: #0f0; max-width: 300px; width: 80%; }
-        .close-modal { margin-top: 20px; background: #0f0; color: #000; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        #stats {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 15px 30px;
+            border: 4px solid #00ff00;
+            border-radius: 20px;
+            font-size: 28px;
+            z-index: 100;
+            box-shadow: 0 0 20px #00ff00;
+        }
 
-        h1, h2, #counter { text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0; color: #0ff; }
-        
-        /* NAPRAWIONY OVERLAY Z ZASADAMI */
+        #shop {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .upgrade {
+            background: linear-gradient(#222, #000);
+            color: #00ff00;
+            padding: 20px;
+            border: 3px solid #00ff00;
+            border-radius: 20px;
+            font-size: 18px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px #00ff00;
+        }
+
+        .upgrade:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px #ffff00;
+        }
+
+        .upgrade.afford-yes {
+            border-color: #ffff00;
+            animation: pulseGreen 1s infinite;
+        }
+
+        @keyframes pulseGreen {
+            0%, 100% { box-shadow: 0 0 15px #00ff00; }
+            50% { box-shadow: 0 0 40px #ffff00; }
+        }
+
         #overlay {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
+            inset: 0;
+            background: rgba(0,0,0,0.97);
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(5px);
-            transition: opacity 0.5s ease;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
         }
-        #overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
+
         #rules-box {
             background: #111;
-            padding: 30px;
-            border: 4px solid #f00;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 0 30px #f00;
-        }
-        
-        #start-btn.enabled { background: #0f0; color: #000; border-color: #0f0; box-shadow: 0 0 25px #0f0; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 25px #0f0; } 50% { box-shadow: 0 0 40px #0f0; } 100% { box-shadow: 0 0 25px #0f0; } }
-        
-        #stats { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); padding: 10px 20px; border: 2px solid #0f0; border-radius: 10px; font-size: 20px; z-index: 100; }
-        #counter { font-size: 80px; margin: 20px 0; font-weight: 900; }
-        .main-btn { padding: 40px 80px; font-size: 36px; background: linear-gradient(#333, #111); color: #0ff; border: 5px solid #0ff; border-radius: 25px; margin: 20px; position: relative; }
-        #shop { margin-top: 30px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 90%; max-width: 600px; }
-        
-        .upgrade {
-            background: #111;
-            color: #0f0;
-            padding: 15px;
-            border: 2px solid #0f0;
-            border-radius: 15px;
-            font-size: 14px;
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        .upgrade span { font-size: 12px; color: #0bf; margin-top: 5px; }
-
-        .upgrade.afford-no {
-            opacity: 0.4;
-            border-color: #555;
-            color: #555;
-            cursor: not-allowed;
-        }
-        .upgrade.afford-yes {
-            border-color: #0f0;
-            box-shadow: 0 0 20px #0f0;
-            animation: pulseGreen 1.5s infinite;
-        }
-        @keyframes pulseGreen {
-            0% { box-shadow: 0 0 10px #0f0; }
-            50% { box-shadow: 0 0 30px #0f0; }
-            100% { box-shadow: 0 0 10px #0f0; }
+            padding: 40px;
+            border: 6px solid #ff0000;
+            border-radius: 30px;
+            max-width: 500px;
+            box-shadow: 0 0 50px #ff0000;
         }
 
-        /* Modal zwycięstwa */
-        #win-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            color: #0f0;
-        }
-        #win-message {
-            font-size: 48px;
-            text-shadow: 0 0 30px #0ff;
-            margin-bottom: 30px;
-            animation: rainbow 3s infinite;
-        }
-        @keyframes rainbow {
-            0% { color: #0ff; }
-            20% { color: #f0f; }
-            40% { color: #ff0; }
-            60% { color: #0f0; }
-            80% { color: #f00; }
-            100% { color: #0ff; }
-        }
-        #screenshot-img {
-            max-width: 90%;
-            border: 5px solid #0f0;
-            border-radius: 15px;
-            box-shadow: 0 0 40px #0f0;
-            margin: 20px 0;
-        }
-        #copy-btn {
-            background: #0f0;
+        #start-btn.enabled {
+            background: #00ff00;
             color: #000;
-            padding: 15px 30px;
-            font-size: 24px;
+            padding: 15px 40px;
+            font-size: 30px;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
-            margin-top: 20px;
+            animation: pulse 1.5s infinite;
         }
     </style>
 </head>
 <body>
 
-    <div id="contact-icon" onclick="toggleContact(true)">✉️</div>
-
-    <div id="contact-modal" onclick="toggleContact(false)">
-        <div class="contact-box" onclick="event.stopPropagation()">
-            <h2>KONTAKT Z TWORCĄ</h2>
-            <p>email</p>
-            <p style="color: #fff; font-size: 14px;">MemeClikerKontakt@gmail.com</p>
-            <button class="close-modal" onclick="toggleContact(false)">ZAMKNIJ</button>
-        </div>
-    </div>
-
-    <!-- NAPRAWIONY OVERLAY -->
     <div id="overlay">
         <div id="rules-box">
-            <h2>OSTRZEŻENIE: TOTALNY CHAOS</h2>
-            <p>1. Nie klnij<br>2. Klikasz = ryzykujesz Rick Roll<br>3. Nie ma litości.</p>
+            <h2 style="color:#ff0000; font-size:48px;">OSTRZEŻENIE: TOTALNE DYMY</h2>
+            <p style="font-size:22px;">Klikasz = 30% szansy na Rick Roll<br>Nie ma odwrotu. Akceptujesz ryzyko?</p>
+            <br>
             <input type="checkbox" id="c" onchange="toggleStart()">
-            <label for="c">Akceptuję ryzyko</label><br><br>
-            <button id="start-btn" disabled>ROZPOCZYNAM ARMAGEDON</button>
+            <label for="c" style="font-size:20px;">Akceptuję, że mogę zostać zricksrollowany</label>
+            <br><br>
+            <button id="start-btn" disabled>ROZPOCZYNAM CHAOS</button>
         </div>
     </div>
 
     <div id="stats">COINY: <span id="coins">0</span> | CPS: <span id="cps">0</span></div>
-    <h1 id="counter">0</h1>
-    <button class="main-btn" id="click-btn">KLIKAJ MOCNO!</button>
+    <h1>MEME CLICKER 2026</h1>
+    <div id="counter">0</div>
+    <button id="click-btn">KLIKAJ<br>ALBO GIN</button>
 
     <div id="shop">
-        <button class="upgrade" data-cost="15" data-power="1">🚀 Młody 67<br><span>15 coinów (+1 CPS)</span></button>
+        <button class="upgrade" data-cost="15" data-power="1">🚀 Młody 6-7<br><span>15 coinów (+1 CPS)</span></button>
         <button class="upgrade" data-cost="150" data-power="10">👑 Grzegorz B.<br><span>150 coinów (+10 CPS)</span></button>
-        <button class="upgrade" data-cost="560000" data-power="1000">✨ Asterka Boża<br><span>560 000 coinów (+1000 CPS)</span></button>
-        <button class="upgrade" data-cost="10.99" data-power="10">🚗 BMW E46 w proszku<br><span>10.99 coinów (+10 CPS)</span></button>
-        <button class="upgrade" onclick="buyIns()">🛡️ TARCZA<br><span>Specjalny item</span></button>
-        <button class="upgrade" onclick="buyGold()">🦷 WYKAŁACZKA<br><span>100 000 000 coinów</span></button>
-    </div>
-
-    <!-- Modal zwycięstwa -->
-    <div id="win-modal">
-        <h1 id="win-message">ELO MORDO!<br>JESTEM Z CIEBIE DUMNY!</h1>
-        <p style="font-size:24px; max-width:80%;">Ukończyłeś grę z 99 999 999 coinami! 💪🔥</p>
-        <p style="font-size:20px;">Wyślij ten screenshot na:<br><strong>MemeClikerKontakt@gmail.com</strong><br>z tematem: <strong>"ukończyłem grę"</strong></p>
-        <img id="screenshot-img" src="" alt="Twój screenshot">
-        <button id="copy-btn">KOPIUJ OBRAZ DO SCHOWKA</button>
+        <button class="upgrade" data-cost="1000" data-power="50">🔥 Panewka stuka<br><span>1000 coinów (+50 CPS)</span></button>
+        <button class="upgrade" data-cost="10000" data-power="200">💨 Dymy idą full<br><span>10k coinów (+200 CPS)</span></button>
+        <button class="upgrade" data-cost="560000" data-power="1000">✨ Asterka Boża<br><span>560k coinów (+1000 CPS)</span></button>
+        <button class="upgrade" data-cost="9999999" data-power="10000">🦸‍♂️ Legenda Progu<br><span>10M coinów (+10k CPS)</span></button>
     </div>
 
     <script>
-        let clicks = 0, coins = 0, autoCPS = 0, clickPower = 1;
+        let coins = 0, clicks = 0, autoCPS = 0, clickPower = 1;
         const WIN_GOAL = 99999999;
 
-        const clickTexts = [
-            "DYMY!", "SIX SEVEN", "PROGI SYP", "PANEWKA STUKA", "ASTRA OPC", 
-            "MŁODY 6-7", "GRZEGORZ B.", "+1 COIN", "ŁADNY DZISIAJ", "NO SIEMA", 
-            "KOX", "LEGENDARNIE", "TURBO LECI", "DYMY IDĄ"
+        // Pula dźwięków przy każdym kliknięciu
+        const clickSounds = [
+            "https://cdn.myinstants.com/instants/audio/six-seven-73913.mp3",
+            "https://cdn.myinstants.com/instants/audio/jixaw-metal-pipe-falling-sound-28270.mp3",
+            "https://cdn.myinstants.com/instants/audio/walking-on-gravel-62088.mp3",
+            "https://www.myinstants.com/media/sounds/airhorn.mp3",
+            "https://cdn.myinstants.com/instants/audio/vine-boom-91928.mp3"
         ];
 
-        function createClickEffect(x, y) {
-            const text = clickTexts[Math.floor(Math.random() * clickTexts.length)];
+        const memTexts = [
+            "DYMY!", "SIX SEVEN!", "PROGI SYP!", "PANEWKA!", "ASTRA OPC!", "MŁODY 6-7!", 
+            "GRZEGORZ B.!", "NO SIEMA!", "ŁADNY DZISIAJ!", "TURBO LECI!", "LEGENDARNIE!", 
+            "KOX!", "ELO MORDO!", "ASTRA ŻYJE!", "BMW W PROSZKU!"
+        ];
+
+        function playRandomSound() {
+            const sound = new Audio(clickSounds[Math.floor(Math.random() * clickSounds.length)]);
+            sound.volume = 0.6;
+            sound.play().catch(() => {});
+        }
+
+        function createEffect(x, y) {
+            const text = memTexts[Math.floor(Math.random() * memTexts.length)];
             const el = document.createElement('div');
             el.className = 'click-effect';
             el.innerText = text;
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
+            el.style.left = (x - 50) + 'px';
+            el.style.top = (y - 50) + 'px';
+            el.style.color = ['#ff00ff', '#00ffff', '#ffff00', '#ff0000'][Math.floor(Math.random() * 4)];
             document.body.appendChild(el);
-            setTimeout(() => el.remove(), 1000);
+            setTimeout(() => el.remove(), 1200);
         }
 
         document.getElementById('click-btn').addEventListener('click', function(e) {
-            if (coins >= 200) { clickPower = 1000000; }
+            // Zwiększ licznik
             clicks += clickPower;
             coins += clickPower;
-            updateUI();
 
-            const rect = this.getBoundingClientRect();
-            const x = rect.left + rect.width / 2 + (Math.random() - 0.5) * 100;
-            const y = rect.top + rect.height / 2;
-            createClickEffect(x, y);
+            // Dźwięk przy każdym kliknięciu
+            playRandomSound();
+
+            // Efekt wizualny
+            createEffect(e.clientX, e.clientY);
+
+            // 30% szansy na Rick Roll
+            if (Math.random() < 0.30) {
+                setTimeout(() => {
+                    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+                }, 300);
+            }
+
+            updateUI();
         });
 
-        function toggleContact(show) {
-            document.getElementById('contact-modal').style.display = show ? 'flex' : 'none';
-        }
-
-        // NAPRAWIONA FUNKCJA STARTU
         function toggleStart() {
-            const btn = document.getElementById('start-btn');
             const checked = document.getElementById('c').checked;
+            const btn = document.getElementById('start-btn');
             btn.disabled = !checked;
-            btn.classList.toggle('enabled', checked);
-
             if (checked) {
-                btn.onclick = function() {
-                    const overlay = document.getElementById('overlay');
-                    overlay.classList.add('hidden');
-                    setTimeout(() => {
-                        overlay.style.display = 'none';
-                    }, 500); // po animacji zniknięcia
+                btn.classList.add('enabled');
+                btn.onclick = () => {
+                    document.getElementById('overlay').style.display = 'none';
                 };
             }
         }
 
-        function buy(cost, power, name = "") {
+        function buy(cost, power) {
             if (coins >= cost) {
                 coins -= cost;
                 autoCPS += power;
                 updateUI();
                 checkAffordability();
-
-                if (name.includes("BMW")) {
-                    new Audio("https://cdn.myinstants.com/instants/audio/walking-on-gravel-62088.mp3").play().catch(() => {});
-                } else if (name.includes("Asterka")) {
-                    new Audio("https://cdn.myinstants.com/instants/audio/jixaw-metal-pipe-falling-sound-28270.mp3").play().catch(() => {});
-                } else if (name.includes("Młody")) {
-                    new Audio("https://cdn.myinstants.com/instants/audio/six-seven-73913.mp3").play().catch(() => {});
-                }
-            } else {
-                alert("Za mało coinów, biedaku!");
             }
         }
 
         document.querySelectorAll('.upgrade[data-cost]').forEach(btn => {
-            const cost = parseFloat(btn.getAttribute('data-cost'));
-            const power = parseInt(btn.getAttribute('data-power'));
-            const text = btn.innerText;
-            btn.onclick = () => buy(cost, power, text);
+            const cost = parseFloat(btn.dataset.cost);
+            const power = parseInt(btn.dataset.power);
+            btn.onclick = () => buy(cost, power);
         });
 
         function checkAffordability() {
             document.querySelectorAll('.upgrade[data-cost]').forEach(btn => {
-                const cost = parseFloat(btn.getAttribute('data-cost'));
+                const cost = parseFloat(btn.dataset.cost);
                 if (coins >= cost) {
-                    btn.classList.remove('afford-no');
                     btn.classList.add('afford-yes');
                 } else {
                     btn.classList.remove('afford-yes');
-                    btn.classList.add('afford-no');
                 }
             });
-        }
-
-        function checkWin() {
-            if (coins >= WIN_GOAL && document.getElementById('win-modal').style.display !== 'flex') {
-                triggerWin();
-            }
-        }
-
-        async function triggerWin() {
-            const canvas = await html2canvas(document.body);
-            const imgData = canvas.toDataURL("image/png");
-
-            document.getElementById('screenshot-img').src = imgData;
-            document.getElementById('win-modal').style.display = 'flex';
-
-            document.getElementById('copy-btn').onclick = async () => {
-                try {
-                    const blob = await (await fetch(imgData)).blob();
-                    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-                    alert("Screenshot skopiowany do schowka! Wklej go do maila.");
-                } catch (err) {
-                    alert("Nie udało się skopiować – zapisz obrazek ręcznie (prawy przycisk → zapisz jako)");
-                }
-            };
         }
 
         function updateUI() {
@@ -330,14 +307,17 @@
             document.getElementById('coins').innerText = Math.floor(coins).toLocaleString('pl-PL');
             document.getElementById('cps').innerText = autoCPS;
             checkAffordability();
-            checkWin();
+
+            if (coins >= WIN_GOAL) {
+                alert("ELO MORDO! UKOŃCZYŁEŚ GRĘ Z 99 999 999 COINAMI! JESTEM Z CIEBIE DUMNY 🔥💪");
+            }
         }
 
         setInterval(() => {
-            if (autoCPS > 0) { 
-                clicks += autoCPS; 
-                coins += autoCPS; 
-                updateUI(); 
+            if (autoCPS > 0) {
+                coins += autoCPS;
+                clicks += autoCPS;
+                updateUI();
             }
         }, 1000);
 
